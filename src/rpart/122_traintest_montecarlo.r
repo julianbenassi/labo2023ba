@@ -9,7 +9,6 @@ PARAM <- list()
 # reemplazar por las propias semillas
 PARAM$semillas <- c(700027, 700057, 700079, 700081, 700117)
 
-
 #------------------------------------------------------------------------------
 # particionar agrega una columna llamada fold a un dataset que consiste
 #  en una particion estratificada segun agrupa
