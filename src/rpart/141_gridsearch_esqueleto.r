@@ -11,8 +11,9 @@ require("parallel")
 
 PARAM <- list()
 # reemplazar por las propias semillas
-PARAM$semillas <- c(102191, 200177, 410551, 552581, 892237)
-
+PARAM$semillas <- c(700027, 700057, 700079, 700081, 700117)
+# Define las semillas
+ksemillas <- c(700027, 700057, 700079, 700081, 700117)
 #------------------------------------------------------------------------------
 # particionar agrega una columna llamada fold a un dataset
 #  que consiste en una particion estratificada segun agrupa
@@ -40,7 +41,7 @@ ArbolEstimarGanancia <- function(semilla, param_basicos) {
   # quiero predecir clase_ternaria a partir del resto
   modelo <- rpart("clase_ternaria ~ .",
     data = dataset[fold == 1], # fold==1  es training,  el 70% de los datos
-    xval = 0,
+    xval = 10,
     control = param_basicos
   ) # aqui van los parametros del arbol
 
@@ -78,7 +79,7 @@ ArbolesMontecarlo <- function(semillas, param_basicos) {
     semillas, # paso el vector de semillas
     MoreArgs = list(param_basicos), # aqui paso el segundo parametro
     SIMPLIFY = FALSE,
-    mc.cores = 1
+    mc.cores = 3
   ) # se puede subir a 5 si posee Linux o Mac OS
 
   ganancia_promedio <- mean(unlist(ganancias))
@@ -120,15 +121,17 @@ cat(
 
 # itero por los loops anidados para cada hiperparametro
 
-for (vmax_depth in c(4, 6, 8, 10, 12, 14)) {
-  for (vmin_split in c(1000, 800, 600, 400, 200, 100, 50, 20, 10)) {
+for (vmax_depth in c(5, 10, 15, 20, 25, 30)) {
+  for (vmin_split in c(7680, 3840, 1920, 960, 480, 240, 120, 60, 30)) {
+    for(cp in c(-1,-0.8,-0.6,-0.4,-0.2,0)) {
+        for(minbucket in c(3,6,12,24,48,vmin_split/4)) {
     # notar como se agrega
 
     # vminsplit  minima cantidad de registros en un nodo para hacer el split
     param_basicos <- list(
-      "cp" = -0.5, # complejidad minima
+      "cp" = cp, # complejidad minima
       "minsplit" = vmin_split,
-      "minbucket" = 5, # minima cantidad de registros en una hoja
+      "minbucket" = minbucket, # minima cantidad de registros en una hoja
       "maxdepth" = vmax_depth
     ) # profundidad máxima del arbol
 
@@ -144,5 +147,7 @@ for (vmax_depth in c(4, 6, 8, 10, 12, 14)) {
       vmin_split, "\t",
       ganancia_promedio, "\n"
     )
-  }
+            }
+        }
+    }
 }
