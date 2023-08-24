@@ -13,7 +13,6 @@ PARAM <- list()
 # reemplazar por las propias semillas
 PARAM$semillas <- c(700027, 700057, 700079, 700081, 700117)
 # Define las semillas
-ksemillas <- c(700027, 700057, 700079, 700081, 700117)
 #------------------------------------------------------------------------------
 # particionar agrega una columna llamada fold a un dataset
 #  que consiste en una particion estratificada segun agrupa
@@ -41,7 +40,7 @@ ArbolEstimarGanancia <- function(semilla, param_basicos) {
   # quiero predecir clase_ternaria a partir del resto
   modelo <- rpart("clase_ternaria ~ .",
     data = dataset[fold == 1], # fold==1  es training,  el 70% de los datos
-    xval = 10,
+    xval = 0,
     control = param_basicos
   ) # aqui van los parametros del arbol
 
@@ -99,6 +98,10 @@ dataset <- fread("./datasets/dataset_pequeno.csv")
 # trabajo solo con los datos con clase, es decir 202107
 dataset <- dataset[clase_ternaria != ""]
 
+
+dataset[is.na(dataset)] <- 0 # reemplazo los NA por 0
+
+
 # genero el archivo para Kaggle
 # creo la carpeta donde va el experimento
 # HT  representa  Hiperparameter Tuning
@@ -115,16 +118,18 @@ cat(
   sep = "",
   "max_depth", "\t",
   "min_split", "\t",
+  "cp", "\t",
+  "minbucket", "\t",
   "ganancia_promedio", "\n"
 )
 
 
 # itero por los loops anidados para cada hiperparametro
 
-for (vmax_depth in c(5, 10, 15, 20, 25, 30)) {
-  for (vmin_split in c(7680, 3840, 1920, 960, 480, 240, 120, 60, 30)) {
-    for(cp in c(-1,-0.8,-0.6,-0.4,-0.2,0)) {
-        for(minbucket in c(3,6,12,24,48,vmin_split/4)) {
+for (vmax_depth in c(7,6)) {
+  for (vmin_split in c(900,850,800,750,700,650,600,550,500)) {
+    for(cp in c(-0.6)) {
+        for(minbucket in c(vmin_split,vmin_split/2,vmin_split/3,vmin_split/4)) {
     # notar como se agrega
 
     # vminsplit  minima cantidad de registros en un nodo para hacer el split
@@ -136,7 +141,7 @@ for (vmax_depth in c(5, 10, 15, 20, 25, 30)) {
     ) # profundidad máxima del arbol
 
     # Un solo llamado, con la semilla 17
-    ganancia_promedio <- ArbolesMontecarlo(ksemillas, param_basicos)
+    ganancia_promedio <- ArbolesMontecarlo(PARAM$semillas , param_basicos)
 
     # escribo los resultados al archivo de salida
     cat(
@@ -145,8 +150,12 @@ for (vmax_depth in c(5, 10, 15, 20, 25, 30)) {
       sep = "",
       vmax_depth, "\t",
       vmin_split, "\t",
+      cp, "\t",
+      minbucket, "\t",
       ganancia_promedio, "\n"
     )
+    # Mostrar información en la consola
+            cat("Iteración:", vmax_depth, "-", vmin_split, "-", cp, "-", minbucket, "\t Ganancia promedio:", ganancia_promedio, "\n") # nolint
             }
         }
     }
