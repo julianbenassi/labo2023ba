@@ -53,7 +53,7 @@ ArbolEstimarGanancia <- function(semilla, param_basicos) {
   # Calculo la ganancia en testing que es fold==2
   ganancia_test <- dataset[fold == 2, ]
   ganancia_test$ganancia <- ifelse(prediccion[, "Positivo"] > 0.025,
-    ifelse(ganancia_test$clase_binaria1 == "Positivo", 117000, -3000), # Cambiado Negativo por Positivo
+    ifelse(ganancia_test$clase_binaria1 == "Positivo", 117000, -3000), 
     0
   )
   ganancia_test_normalizada <- sum(ganancia_test$ganancia) / 0.3
