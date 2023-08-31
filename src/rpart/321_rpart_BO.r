@@ -193,7 +193,7 @@ dir.create("./exp/", showWarnings = FALSE)
 dir.create("./exp/HT3210/", showWarnings = FALSE)
 
 # Establezco el Working Directory DEL EXPERIMENTO
-setwd("./exp/HT3210/")
+setwd("/home/julianbenassi013/Desktop/salida_grid/")
 
 
 archivo_log <- "HT321.txt"
