@@ -19,9 +19,9 @@ PARAM$semilla <- 700027
 # parameetros rpart
 PARAM$rpart_param <- list(
   "cp" = -1,
-  "minsplit" = 1000,
-  "minbucket" = 10,
-  "maxdepth" = 6
+  "minsplit" = 250,
+  "minbucket" = 100,
+  "maxdepth" = 14
 )
 
 # parametros  arbol
@@ -43,8 +43,8 @@ dataset <- fread("./datasets/dataset_pequeno.csv")
 
 # creo la carpeta donde va el experimento
 dir.create("./exp/", showWarnings = FALSE)
-carpeta_experimento <- paste0("./exp/KF", PARAM$experimento, "/")
-dir.create(paste0("./exp/KF", PARAM$experimento, "/"),
+carpeta_experimento <- paste0("./exp/OF", PARAM$experimento, "/")
+dir.create(paste0("./exp/OF", PARAM$experimento, "/"),
   showWarnings = FALSE
 )
 
@@ -106,7 +106,7 @@ for (arbolito in 1:PARAM$num_trees_max) {
     )) # genero la salida
 
     nom_arch <- paste0(
-      "KF", PARAM$experimento, "_",
+      "OF", PARAM$experimento, "_",
       sprintf("%.3d", arbolito), # para que tenga ceros adelante
       ".csv"
     )
