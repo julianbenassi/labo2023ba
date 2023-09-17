@@ -19,7 +19,7 @@ PARAM$exp_input <- "FE6310"
 # entreno en 18 meses
 
 PARAM$future <- c(202109)
-PARAM$final_train <- c(202209,202208,202002,202001,
+PARAM$final_train <- c(202009,202008,202002,202001,
 201912, 201911
 )
 
