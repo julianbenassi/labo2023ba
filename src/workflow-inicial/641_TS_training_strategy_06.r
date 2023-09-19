@@ -19,15 +19,18 @@ PARAM$exp_input <- "FE6310"
 # entreno en 18 meses
 
 PARAM$future <- c(202109)
-PARAM$final_train <- c(202011,202010,202009,202008,202002,202001
+PARAM$final_train <- c(202106,202105,202104,202103,202102,202101,202012, 202011,
+ 202010, 202009, 202008, 202007, 202006, 202005, 202004,202003,
+  202002, 202001
 )
 
-PARAM$train$training <- c(202009,202008,202002,202001,
-201912, 201911
+PARAM$train$training <- c(202104,202103,202102,202101,202012, 202011, 202010,
+ 202009, 202008,202007, 202006, 202005, 202004,202003,202002,
+  202001,201912, 201911
 )
 
-PARAM$train$validation <- c( 202010)
-PARAM$train$testing <- c(  202011)
+PARAM$train$validation <- c( 202105)
+PARAM$train$testing <- c(  202106)
 
 # Atencion  0.1  de  undersampling de la clase mayoritaria,  los CONTINUA
 # 1.0 significa NO undersampling ,  0.1  es quedarse con el 10% de los CONTINUA
